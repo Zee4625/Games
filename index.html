@@ -204,24 +204,19 @@
         color: #002222;
     }
 
-    /* Culori pentru cota */
     .rating-red {
         color: #ff3b3b;
-        text-shadow:
-          0 0 10px #ff3b3b;
+        text-shadow: 0 0 10px #ff3b3b;
     }
     .rating-yellow {
         color: #ffd93b;
-        text-shadow:
-          0 0 10px #ffd93b;
+        text-shadow: 0 0 10px #ffd93b;
     }
     .rating-green {
         color: #00ff8c;
-        text-shadow:
-          0 0 10px #00ff8c;
+        text-shadow: 0 0 10px #00ff8c;
     }
 
-    /* Responsive */
     @media (max-width: 720px) {
         .leaderboard-container {
             padding: 20px 15px;
@@ -253,9 +248,41 @@
         font-weight: 700;
         color: #008080;
         font-size: 16px;
-        text-shadow:
-          0 0 6px #008080;
+        text-shadow: 0 0 6px #008080;
         user-select: none;
+    }
+
+    .rules-section {
+        margin-top: 40px;
+        max-width: 900px;
+        width: 100%;
+        background: #0d1426;
+        padding: 30px 40px;
+        border-radius: 20px;
+        box-shadow: 0 0 20px #00ffff44, inset 0 0 10px #00ffff22;
+        color: #ccf7ff;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .rules-section h2 {
+        font-family: 'Orbitron', monospace;
+        color: #00ffff;
+        font-size: 26px;
+        margin-bottom: 18px;
+        text-shadow: 0 0 12px #00ffffaa;
+    }
+
+    .rules-section ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .rules-section li {
+        margin-bottom: 12px;
+        font-size: 18px;
+        line-height: 1.5;
+        text-shadow: 0 0 6px #00ffff33;
     }
 </style>
 </head>
@@ -280,6 +307,17 @@
 </div>
 
 <footer>Made by ZeeHUB</footer>
+
+<section class="rules-section">
+    <h2>Regulament</h2>
+    <ul>
+        <li>🔹 Fiecare joc câștigat îți poate îmbunătăți poziția în clasament.</li>
+        <li>🔹 Cota se bazează pe performanța din jocuri!</li>
+        <li>🔹 Comportamentul toxic poate duce la eliminarea din clasament.</li>
+        <li>🔹 Clasamentul se actualizează zilnic.</li>
+        <li>🔹 Doar utilizatorii autentificați apar în leaderboard.</li>
+    </ul>
+</section>
 
 <script>
     const players = [
