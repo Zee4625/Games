@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Leaderboard Borderlands ZeeHUB Edition - Cota Colorată</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap');
+
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        background: #0a0f1a;
+        font-family: 'Roboto', sans-serif;
+        color: #e0e6ff;
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        user-select: none;
+    }
+
+    header {
+        font-family: 'Orbitron', monospace;
+        font-weight: 900;
+        font-size: 40px;
+        color: #00ffff;
+        text-shadow:
+          0 0 8px #00ffff,
+          0 0 20px #00ffff,
+          0 0 40px #00ffff;
+        margin-bottom: 30px;
+        user-select: none;
+    }
+
+    .leaderboard-container {
+        width: 100%;
+        max-width: 900px;
+        background: linear-gradient(135deg, #111122, #0a0f1a);
+        border-radius: 20px;
+        padding: 30px 40px;
+        box-shadow:
+          0 0 25px #00ffffcc,
+          inset 0 0 15px #00ffff88;
+        backdrop-filter: blur(8px);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 14px;
+        font-size: 20px;
+        min-width: 600px;
+        color: #ccf7ff;
+    }
+
+    thead tr {
+        color: #00ffff;
+        font-family: 'Orbitron', monospace;
+        font-weight: 700;
+        text-shadow: 0 0 12px #00ffff;
+    }
+
+    thead th {
+        padding: 18px 28px;
+        text-align: left;
+        cursor: pointer;
+        position: relative;
+        user-select: none;
+        transition: color 0.3s ease;
+    }
+    thead th:hover {
+        color: #00ffffcc;
+        text-shadow: 0 0 24px #00ffff;
+    }
+    thead th .sort-arrow {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        opacity: 0.3;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        user-select: none;
+    }
+    thead th.sorted-asc .sort-arrow {
+        opacity: 1;
+        transform: translateY(-50%) rotate(180deg);
+    }
+    thead th.sorted-desc .sort-arrow {
+        opacity: 1;
+        transform: translateY(-50%) rotate(0deg);
+    }
+
+    tbody tr {
+        background: #00102288;
+        border-radius: 16px;
+        box-shadow:
+          0 0 12px #00ffff44,
+          inset 0 0 10px #00ffff66;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: default;
+        backdrop-filter: blur(6px);
+    }
+    tbody tr:hover {
+        transform: translateY(-6px);
+        box-shadow:
+          0 0 30px #00ffffcc,
+          inset 0 0 20px #00ffffee;
+        background: #002244cc;
+    }
+
+    tbody td {
+        padding: 16px 28px;
+        vertical-align: middle;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-shadow: 0 0 8px #00ffffaa;
+        color: #b0e6ff;
+        user-select: text;
+    }
+
+    tbody td.center {
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .player-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00ffff, #005555);
+        box-shadow:
+          0 0 14px #00ffffcc,
+          inset 0 0 10px #00ffffee;
+        color: #001f1f;
+        font-family: 'Orbitron', monospace;
+        font-weight: 900;
+        font-size: 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 18px;
+        text-shadow:
+          0 0 4px #00ffffcc,
+          0 0 8px #00ffffcc;
+        user-select: none;
+    }
+    .player-name {
+        vertical-align: middle;
+        font-weight: 700;
+        font-size: 20px;
+        color: #00ffff;
+        text-shadow:
+          0 0 12px #00ffff,
+          0 0 18px #00ffff;
+        user-select: text;
+    }
+
+    .rank-badge {
+        font-weight: 700;
+        padding: 8px 16px;
+        border-radius: 36px;
+        color: #001f1f;
+        text-align: center;
+        width: 60px;
+        font-family: 'Orbitron', monospace;
+        font-size: 18px;
+        box-shadow:
+          0 0 6px rgba(0,0,0,0.4);
+        display: inline-block;
+        letter-spacing: 0.05em;
+        transition: transform 0.3s ease;
+        user-select: none;
+    }
+    .rank-badge:hover {
+        transform: scale(1.15);
+        box-shadow:
+          0 0 22px #00ffffee,
+          0 0 36px #00ffffcc;
+        cursor: default;
+    }
+    .rank-1 {
+        background: #00ffff;
+        box-shadow:
+          0 0 24px #00ffff,
+          inset 0 0 14px #00ffff;
+    }
+    .rank-2 {
+        background: #66ffff;
+        box-shadow:
+          0 0 20px #66ffff,
+          inset 0 0 12px #66ffff;
+        color: #003333;
+    }
+    .rank-3 {
+        background: #33cccc;
+        box-shadow:
+          0 0 18px #33cccc,
+          inset 0 0 10px #33cccc;
+        color: #002222;
+    }
+
+    /* Culori pentru cota */
+    .rating-red {
+        color: #ff3b3b;
+        text-shadow:
+          0 0 10px #ff3b3b;
+    }
+    .rating-yellow {
+        color: #ffd93b;
+        text-shadow:
+          0 0 10px #ffd93b;
+    }
+    .rating-green {
+        color: #00ff8c;
+        text-shadow:
+          0 0 10px #00ff8c;
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+        .leaderboard-container {
+            padding: 20px 15px;
+            overflow-x: auto;
+        }
+        table {
+            font-size: 16px;
+            min-width: 550px;
+        }
+        tbody td {
+            padding: 12px 15px;
+        }
+        .player-avatar {
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+            margin-right: 12px;
+        }
+        .rank-badge {
+            width: 48px;
+            padding: 6px 10px;
+            font-size: 16px;
+        }
+    }
+
+    footer {
+        margin-top: 40px;
+        font-family: 'Orbitron', monospace;
+        font-weight: 700;
+        color: #008080;
+        font-size: 16px;
+        text-shadow:
+          0 0 6px #008080;
+        user-select: none;
+    }
+</style>
+</head>
+<body>
+
+<header>Leaderboard</header>
+
+<div class="leaderboard-container">
+    <table id="leaderboard">
+        <thead>
+            <tr>
+                <th data-key="rank">Loc <span class="sort-arrow">▲</span></th>
+                <th data-key="player">Jucător <span class="sort-arrow">▲</span></th>
+                <th data-key="rating">Cota <span class="sort-arrow">▲</span></th>
+                <th data-key="wins">Jocuri Câștigate <span class="sort-arrow">▲</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- JS populate -->
+        </tbody>
+    </table>
+</div>
+
+<footer>Made by ZeeHUB</footer>
+
+<script>
+    const players = [
+        { rank: 1, player: "X", rating: 10, wins: 0 },
+        { rank: 2, player: "X", rating: 10, wins: 0 },
+        { rank: 3, player: "X", rating: 10, wins: 0 },
+        { rank: 4, player: "X", rating: 10, wins: 0 },
+        { rank: 5, player: "X", rating: 10, wins: 0 },
+        { rank: 6, player: "X", rating: 10, wins: 0 },
+        { rank: 7, player: "X", rating: 10, wins: 0 },
+        { rank: 8, player: "X", rating: 10, wins: 0 },
+        { rank: 9, player: "X", rating: 10, wins: 0 },
+        { rank: 10, player: "X", rating: 10, wins: 0 },
+    ];
+
+    function getInitial(name) {
+        return name.charAt(0).toUpperCase();
+    }
+
+    function getRatingClass(rating) {
+        if (rating < 3) return 'rating-red';
+        if (rating < 7) return 'rating-yellow';
+        return 'rating-green';
+    }
+
+    const tbody = document.querySelector('#leaderboard tbody');
+
+    function renderTable(data) {
+        tbody.innerHTML = '';
+        data.forEach(player => {
+            let rankClass = '';
+            if(player.rank === 1) rankClass = 'rank-1';
+            else if(player.rank === 2) rankClass = 'rank-2';
+            else if(player.rank === 3) rankClass = 'rank-3';
+
+            const ratingClass = getRatingClass(player.rating);
+
+            tbody.innerHTML += `
+                <tr>
+                    <td class="center"><span class="rank-badge ${rankClass}">${player.rank}</span></td>
+                    <td>
+                        <div class="player-avatar">${getInitial(player.player)}</div>
+                        <span class="player-name">${player.player}</span>
+                    </td>
+                    <td class="center ${ratingClass}">${player.rating.toFixed(1)}</td>
+                    <td class="center">${player.wins}</td>
+                </tr>
+            `;
+        });
+    }
+
+    const headers = document.querySelectorAll('#leaderboard thead th');
+    let currentSortKey = 'rank';
+    let currentSortDir = 'asc';
+
+    function sortData(key, dir) {
+        const sorted = [...players].sort((a,b) => {
+            if(key === 'player') {
+                const A = a.player.toLowerCase();
+                const B = b.player.toLowerCase();
+                if(A < B) return dir === 'asc' ? -1 : 1;
+                if(A > B) return dir === 'asc' ? 1 : -1;
+                return 0;
+            } else {
+                return dir === 'asc' ? a[key] - b[key] : b[key] - a[key];
+            }
+        });
+        renderTable(sorted);
+        return sorted;
+    }
+
+    function updateSortUI(key, dir) {
+        headers.forEach(th => {
+            const thKey = th.getAttribute('data-key');
+            const arrow = th.querySelector('.sort-arrow');
+            if(thKey === key) {
+                th.classList.remove('sorted-asc', 'sorted-desc');
+                th.classList.add(dir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+                arrow.textContent = dir === 'asc' ? '▲' : '▼';
+                arrow.style.opacity = 1;
+            } else {
+                th.classList.remove('sorted-asc', 'sorted-desc');
+                arrow.textContent = '▲';
+                arrow.style.opacity = 0.3;
+            }
+        });
+    }
+
+    renderTable(players);
+    updateSortUI(currentSortKey, currentSortDir);
+
+    headers.forEach(th => {
+        th.addEventListener('click', () => {
+            const key = th.getAttribute('data-key');
+            if(currentSortKey === key) {
+                currentSortDir = currentSortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortKey = key;
+                currentSortDir = 'asc';
+            }
+            sortData(currentSortKey, currentSortDir);
+            updateSortUI(currentSortKey, currentSortDir);
+        });
+    });
+</script>
+
+</body>
+</html>
